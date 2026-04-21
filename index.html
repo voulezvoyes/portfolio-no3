@@ -1,203 +1,766 @@
-export default function PortfolioPreview() {
-  const featured = [
-    {
-      title: 'Spork',
-      subtitle: 'Branching AI conversation interface',
-      tag: 'Human-AI Interaction',
-      problem: 'AI chat is linear, but thinking is not. Valuable directions get buried mid-conversation.',
-      build: 'Designed a chat interface where any message can branch into a parallel thread while preserving the original context.',
-      proof: 'Next.js · Supabase · Anthropic API · in progress',
-      why: 'Shows product thinking around memory, context, and collaborative reasoning with AI.'
-    },
-    {
-      title: 'Compliance Nudge',
-      subtitle: 'Behavioral system for AI training adoption',
-      tag: 'Behavior Design',
-      problem: 'Employees ignored AI training reminders. The issue was not information availability, but visibility and accountability.',
-      build: 'Used Google Calendar, Apps Script, and Sheets to turn training completion into a daily public signal inside the tools people already opened.',
-      proof: 'Zero budget · solo built · internal deployment',
-      why: 'Strong evidence of shipping within real organizational constraints, not just making polished mockups.'
-    },
-    {
-      title: 'Cosmos',
-      subtitle: 'AI knowledge graph prototype',
-      tag: 'AI Product Design',
-      problem: 'Traditional note tools store information but do not surface conceptual connections well.',
-      build: 'Built a prototype that extracts concepts from text and maps them into a connected node graph.',
-      proof: 'Gemini API · deployed prototype',
-      why: 'Frames AI as a structure-building layer rather than just a chatbot.'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jaesung Kim — Human-AI Product Builder</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f1ea;
+      --surface: rgba(255,255,255,0.72);
+      --surface-strong: #ffffff;
+      --surface-soft: #eee7dc;
+      --ink: #171717;
+      --text: #38342f;
+      --muted: #7a7166;
+      --line: #d4cabc;
+      --accent: #8f2436;
+      --accent-soft: rgba(143,36,54,0.08);
+      --shadow: 0 12px 40px rgba(23,23,23,0.06);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --max: 1180px;
+      --font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
     }
-  ];
 
-  const systems = [
-    {
-      metric: '83%',
-      label: 'budget increase',
-      desc: 'Rebuilt organizational documentation and planning systems for Ko.SCA.'
-    },
-    {
-      metric: '2 mo → 2 wks',
-      label: 'onboarding',
-      desc: 'Reduced transition friction by converting tacit knowledge into repeatable operating documents.'
-    },
-    {
-      metric: '19K → 28K',
-      label: 'audience growth',
-      desc: 'Built editorial structure and brand consistency for Erin Oh Studio over two years.'
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.7), transparent 30%),
+        linear-gradient(180deg, #f8f4ed 0%, #f3eee6 100%);
+      color: var(--ink);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-  ];
 
-  const principles = [
-    'AI products fail when they ignore actual human behavior.',
-    'Good systems reduce friction without demanding attention.',
-    'Trust in AI is a UX problem before it is a model problem.',
-    'Robot products need social interaction design, not only hardware logic.'
-  ];
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
 
-  return (
-    <div className="min-h-screen bg-stone-50 text-stone-900">
-      <div className="mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
-        <header className="flex flex-col gap-6 border-b border-stone-300 pb-8 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-3xl">
-            <p className="mb-3 text-xs uppercase tracking-[0.24em] text-stone-500">Jaesung Kim</p>
-            <h1 className="max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
-              Human-AI product builder designing systems people actually use.
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-stone-600 md:text-lg">
-              I work at the intersection of AI products, behavior design, and emerging human-machine interaction.
-              My focus is translating messy human problems into clear product systems, then shipping prototypes that test the idea in practice.
-            </p>
-          </div>
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
 
-          <div className="grid gap-2 text-sm text-stone-600 md:text-right">
-            <a className="transition hover:text-stone-900" href="#projects">View Projects</a>
-            <a className="transition hover:text-stone-900" href="#systems">Systems Work</a>
-            <a className="transition hover:text-stone-900" href="#thinking">How I Think</a>
-            <a className="transition hover:text-stone-900" href="mailto:jaesung@example.com">Contact</a>
-          </div>
-        </header>
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 241, 234, 0.75);
+      border-bottom: 1px solid rgba(212, 202, 188, 0.65);
+    }
 
-        <section className="grid gap-6 py-10 md:grid-cols-3">
-          <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Focus</p>
-            <p className="mt-3 text-2xl font-medium tracking-tight">Human-AI systems</p>
-            <p className="mt-3 text-sm leading-6 text-stone-600">Products that help people think, decide, and act with AI rather than merely chat with it.</p>
-          </div>
-          <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Strength</p>
-            <p className="mt-3 text-2xl font-medium tracking-tight">Behavior + execution</p>
-            <p className="mt-3 text-sm leading-6 text-stone-600">I map user friction, build prototypes quickly, and turn ambiguous workflows into usable systems.</p>
-          </div>
-          <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Next</p>
-            <p className="mt-3 text-2xl font-medium tracking-tight">Robot interaction</p>
-            <p className="mt-3 text-sm leading-6 text-stone-600">Currently positioning toward human-robot trust, social UX, and AI agents that fit real environments.</p>
-          </div>
-        </section>
+    .topbar-inner {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+    }
 
-        <section id="projects" className="border-t border-stone-300 py-10">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Featured Projects</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">Selected work for AI PM and Human-AI roles</h2>
-            </div>
-            <p className="max-w-xl text-sm leading-6 text-stone-600">
-              The strongest portfolio signal is not aesthetic polish alone. It is evidence that a problem was framed clearly,
-              translated into a prototype, and tested against reality.
-            </p>
-          </div>
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
 
-          <div className="grid gap-5">
-            {featured.map((item) => (
-              <article key={item.title} className="grid gap-5 rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm md:grid-cols-[220px_minmax(0,1fr)] md:p-8">
-                <div className="flex flex-col justify-between gap-6 border-b border-stone-200 pb-5 md:border-b-0 md:border-r md:pb-0 md:pr-6">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-stone-500">{item.tag}</p>
-                    <h3 className="mt-3 text-2xl font-semibold tracking-tight">{item.title}</h3>
-                    <p className="mt-2 text-sm text-stone-500">{item.subtitle}</p>
-                  </div>
-                  <div className="rounded-2xl bg-stone-100 p-4 text-sm leading-6 text-stone-600">
-                    {item.proof}
-                  </div>
-                </div>
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px var(--accent-soft);
+      flex: 0 0 auto;
+    }
 
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Problem</p>
-                    <p className="mt-2 text-sm leading-7 text-stone-700">{item.problem}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Built</p>
-                    <p className="mt-2 text-sm leading-7 text-stone-700">{item.build}</p>
-                  </div>
-                  <div className="md:col-span-2">
-                    <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Why it matters</p>
-                    <p className="mt-2 text-sm leading-7 text-stone-700">{item.why}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+    .brand-copy { min-width: 0; }
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
 
-        <section id="systems" className="border-t border-stone-300 py-10">
-          <div className="mb-8 grid gap-4 md:grid-cols-[1.1fr_0.9fr] md:items-end">
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Systems Work</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">I also build operational systems, not only product demos</h2>
-            </div>
-            <p className="text-sm leading-6 text-stone-600">
-              For PM roles, this matters. Shipping is not just interface design. It is making a system sustainable under real constraints,
-              across people, handoffs, incentives, and communication failures.
-            </p>
-          </div>
+    .brand-role {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {systems.map((item) => (
-              <div key={item.label} className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-                <div className="inline-block rounded-full bg-stone-100 px-3 py-1 text-xs uppercase tracking-[0.2em] text-stone-500">
-                  {item.label}
-                </div>
-                <p className="mt-4 text-3xl font-semibold tracking-tight">{item.metric}</p>
-                <p className="mt-3 text-sm leading-6 text-stone-600">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        <section id="thinking" className="border-t border-stone-300 py-10">
-          <div className="mb-8">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">How I Think</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">Product principles shaping my work</h2>
-          </div>
+    .nav a, .nav button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      transition: 160ms ease;
+      cursor: pointer;
+    }
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {principles.map((item) => (
-              <div key={item} className="rounded-3xl border border-stone-200 bg-white p-6 text-base leading-7 text-stone-700 shadow-sm">
-                {item}
-              </div>
-            ))}
-          </div>
-        </section>
+    .nav a:hover, .nav button:hover {
+      background: rgba(255,255,255,0.55);
+      border-color: rgba(212, 202, 188, 0.9);
+      color: var(--ink);
+    }
 
-        <section className="border-t border-stone-300 py-10">
-          <div className="rounded-[2rem] border border-stone-200 bg-stone-900 p-8 text-stone-100 shadow-sm md:p-10">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-400">Next build direction</p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
-              Next, I want a project that proves I can design human-robot trust and interaction flows.
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-300 md:text-base">
-              The clearest gap in the current portfolio is a concrete robot or embodied-agent case. That should be the next addition:
-              a project showing how people interpret timing, trust, interruption, and social cues from a machine in shared space.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3 text-sm text-stone-200">
-              <span className="rounded-full border border-stone-700 px-4 py-2">robot receptionist UX</span>
-              <span className="rounded-full border border-stone-700 px-4 py-2">trust calibration</span>
-              <span className="rounded-full border border-stone-700 px-4 py-2">agent collaboration flows</span>
-            </div>
-          </div>
-        </section>
+    .nav .primary-link {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .nav .primary-link:hover {
+      background: #000;
+      border-color: #000;
+      color: #fff;
+    }
+
+    .hero {
+      padding: 54px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.8fr);
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid rgba(212, 202, 188, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px var(--accent-soft);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 7vw, 5.7rem);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      max-width: 10ch;
+    }
+
+    .hero-copy {
+      margin-top: 22px;
+      max-width: 720px;
+      font-size: 1.06rem;
+      line-height: 1.82;
+      color: var(--text);
+    }
+
+    .hero-copy strong { color: var(--ink); }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      color: var(--ink);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: 160ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: #b8aa95;
+      background: #fff;
+    }
+
+    .btn.primary {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      background: #000;
+      border-color: #000;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(212, 202, 188, 0.9);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .mini-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .mini-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.94rem;
+    }
+
+    .section {
+      padding: 22px 0 10px;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+    }
+
+    .section-note {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 0.97rem;
+    }
+
+    .project-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .project-card {
+      display: grid;
+      grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
+      gap: 22px;
+      padding: 24px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(212, 202, 188, 0.9);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .project-side {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      padding-right: 8px;
+      border-right: 1px solid rgba(212, 202, 188, 0.9);
+    }
+
+    .tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .project-title {
+      margin-top: 14px;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .project-subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    .project-proof {
+      border-radius: 18px;
+      background: var(--surface-soft);
+      padding: 14px 15px;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 0.9rem;
+    }
+
+    .project-main {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project-block {
+      background: rgba(255,255,255,0.58);
+      border: 1px solid rgba(212, 202, 188, 0.72);
+      border-radius: 22px;
+      padding: 16px;
+      min-height: 100%;
+    }
+
+    .project-block.full { grid-column: 1 / -1; }
+
+    .project-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .project-text {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric {
+      padding: 22px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(212, 202, 188, 0.9);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-name {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      margin-top: 16px;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 650;
+      letter-spacing: -0.05em;
+    }
+
+    .metric-desc {
+      margin-top: 10px;
+      color: var(--text);
+      line-height: 1.72;
+      font-size: 0.94rem;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .principle {
+      padding: 22px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(212, 202, 188, 0.9);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .next-box {
+      margin: 20px 0 46px;
+      padding: 30px;
+      border-radius: 32px;
+      background: #1c1b1a;
+      color: #f7f1e8;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+    }
+
+    .next-box .section-kicker { color: #b9ab9a; }
+    .next-box h2 { max-width: 950px; }
+    .next-box p {
+      max-width: 760px;
+      color: #ddd3c8;
+      line-height: 1.85;
+      font-size: 1rem;
+      margin-top: 18px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f2e8db;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .footer {
+      padding: 0 0 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-head,
+      .project-card,
+      .project-main,
+      .metrics,
+      .principles {
+        grid-template-columns: 1fr;
+      }
+
+      .project-side {
+        border-right: 0;
+        padding-right: 0;
+        border-bottom: 1px solid rgba(212, 202, 188, 0.9);
+        padding-bottom: 18px;
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav { justify-content: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .wrap, .topbar-inner { width: min(calc(100% - 22px), var(--max)); }
+      .hero { padding-top: 28px; }
+      .hero-main, .hero-side, .project-card, .metric, .principle, .next-box { padding: 20px; }
+      .mini-card { padding: 16px; }
+      h1 { max-width: 11ch; }
+      .hero-actions, .footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-copy">
+          <div class="brand-name">Jaesung Kim</div>
+          <div class="brand-role">Human-AI Product Builder</div>
+        </div>
       </div>
+      <nav class="nav">
+        <a href="#projects">Projects</a>
+        <a href="#systems">Systems Work</a>
+        <a href="#thinking">How I Think</a>
+        <a class="primary-link" href="mailto:your@email.com">Contact</a>
+      </nav>
     </div>
-  );
-}
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="panel hero-main">
+          <div class="eyebrow">Focused on AI products, behavior, and interaction</div>
+          <h1>Human-AI product builder designing systems people actually use.</h1>
+          <p class="hero-copy">
+            I work at the intersection of <strong>AI products</strong>, <strong>behavior design</strong>, and <strong>emerging human-machine interaction</strong>.
+            My focus is translating messy human problems into clear product systems, then shipping prototypes that test the idea in practice.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#projects">View Featured Work</a>
+            <a class="btn" href="#systems">See Systems Experience</a>
+            <a class="btn" href="https://linkedin.com/in/voulezvoyes" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+
+        <div class="panel hero-side">
+          <div class="mini-card">
+            <div class="mini-label">Focus</div>
+            <div class="mini-title">Human-AI systems</div>
+            <p>Products that help people think, decide, and act with AI rather than merely chat with it.</p>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label">Strength</div>
+            <div class="mini-title">Behavior + execution</div>
+            <p>I map user friction, build prototypes quickly, and turn ambiguous workflows into usable systems.</p>
+          </div>
+          <div class="mini-card">
+            <div class="mini-label">Next</div>
+            <div class="mini-title">Robot interaction</div>
+            <p>Currently positioning toward human-robot trust, social UX, and AI agents that fit real environments.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Featured Projects</div>
+          <h2>Selected work for AI PM and Human-AI roles</h2>
+        </div>
+        <p class="section-note">
+          The strongest portfolio signal is not aesthetic polish alone. It is evidence that a problem was framed clearly,
+          translated into a prototype, and tested against reality.
+        </p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-side">
+            <div>
+              <div class="tag">Human-AI Interaction</div>
+              <div class="project-title">Spork</div>
+              <div class="project-subtitle">Branching AI conversation interface</div>
+            </div>
+            <div class="project-proof">Next.js · Supabase · Anthropic API · In progress</div>
+          </div>
+          <div class="project-main">
+            <div class="project-block">
+              <div class="project-label">Problem</div>
+              <p class="project-text">AI chat is linear, but thinking is not. Valuable directions get buried mid-conversation, even when they should become separate lines of reasoning.</p>
+            </div>
+            <div class="project-block">
+              <div class="project-label">Built</div>
+              <p class="project-text">Designed a chat interface where any message can branch into a parallel thread while preserving the original context and keeping thought paths visible.</p>
+            </div>
+            <div class="project-block full">
+              <div class="project-label">Why it matters</div>
+              <p class="project-text">This project shows product thinking around memory, context, and collaborative reasoning with AI. It is the clearest signal that I care about the structure of human-AI thinking, not just prompt outputs.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-side">
+            <div>
+              <div class="tag">Behavior Design</div>
+              <div class="project-title">Compliance Nudge</div>
+              <div class="project-subtitle">Behavioral system for AI training adoption</div>
+            </div>
+            <div class="project-proof">Zero budget · Solo built · Internal deployment</div>
+          </div>
+          <div class="project-main">
+            <div class="project-block">
+              <div class="project-label">Problem</div>
+              <p class="project-text">Employees ignored AI training reminders. The issue was not information availability, but visibility, social pressure, and accountability.</p>
+            </div>
+            <div class="project-block">
+              <div class="project-label">Built</div>
+              <p class="project-text">Used Google Calendar, Apps Script, and Sheets to turn training completion into a daily public signal inside the tools people already opened at work.</p>
+            </div>
+            <div class="project-block full">
+              <div class="project-label">Why it matters</div>
+              <p class="project-text">This is strong PM evidence because it shows shipping within real organizational constraints, not just designing polished mockups. It is a live systems intervention, not a hypothetical deck.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-side">
+            <div>
+              <div class="tag">AI Product Design</div>
+              <div class="project-title">Cosmos</div>
+              <div class="project-subtitle">AI knowledge graph prototype</div>
+            </div>
+            <div class="project-proof">Gemini API · Deployed prototype</div>
+          </div>
+          <div class="project-main">
+            <div class="project-block">
+              <div class="project-label">Problem</div>
+              <p class="project-text">Traditional note tools store information but do not surface conceptual connections well. Search retrieves facts; it does not reveal structure.</p>
+            </div>
+            <div class="project-block">
+              <div class="project-label">Built</div>
+              <p class="project-text">Built a prototype that extracts concepts from text and maps them into a connected node graph so information becomes visible as structure, not just storage.</p>
+            </div>
+            <div class="project-block full">
+              <div class="project-label">Why it matters</div>
+              <p class="project-text">This frames AI as a structure-building layer rather than just a chatbot. It signals how I think about product opportunities for knowledge work and reasoning support.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="systems" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Systems Work</div>
+          <h2>I also build operational systems, not only product demos</h2>
+        </div>
+        <p class="section-note">
+          For PM roles, this matters. Shipping is not just interface design. It is making a system sustainable under real constraints across people, handoffs, incentives, and communication failures.
+        </p>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-name">Budget increase</div>
+          <div class="metric-value">83%</div>
+          <div class="metric-desc">Rebuilt organizational documentation and planning systems for Ko.SCA, making the group less dependent on individual memory.</div>
+        </div>
+        <div class="metric">
+          <div class="metric-name">Onboarding</div>
+          <div class="metric-value">2 mo → 2 wks</div>
+          <div class="metric-desc">Reduced transition friction by converting tacit knowledge into repeatable operating documents and clearer team handoff processes.</div>
+        </div>
+        <div class="metric">
+          <div class="metric-name">Audience growth</div>
+          <div class="metric-value">19K → 28K</div>
+          <div class="metric-desc">Built editorial structure and brand consistency for Erin Oh Studio over two years, improving coherence and growth together.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="thinking" class="section">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">How I Think</div>
+          <h2>Product principles shaping my work</h2>
+        </div>
+        <p class="section-note">
+          The throughline across my projects is simple: when systems fail, the problem is often not capability, but how people interpret, trust, and use the system around them.
+        </p>
+      </div>
+
+      <div class="principles">
+        <div class="principle">AI products fail when they ignore actual human behavior.</div>
+        <div class="principle">Good systems reduce friction without demanding attention.</div>
+        <div class="principle">Trust in AI is a UX problem before it is a model problem.</div>
+        <div class="principle">Robot products need social interaction design, not only hardware logic.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="next-box">
+        <div class="section-kicker">Next build direction</div>
+        <h2>Next, I want a project that proves I can design human-robot trust and interaction flows.</h2>
+        <p>
+          The clearest gap in the current portfolio is a concrete robot or embodied-agent case. That should be the next addition:
+          a project showing how people interpret timing, trust, interruption, and social cues from a machine in shared space.
+        </p>
+        <div class="chips">
+          <div class="chip">robot receptionist UX</div>
+          <div class="chip">trust calibration</div>
+          <div class="chip">agent collaboration flows</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>Jaesung Kim — Human-AI Product Builder</div>
+      <div class="footer-links">
+        <a href="#projects">Projects</a>
+        <a href="https://linkedin.com/in/voulezvoyes" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:your@email.com">Email</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
