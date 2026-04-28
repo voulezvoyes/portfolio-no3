@@ -1,766 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jaesung Kim — Human-AI Product Builder</title>
-  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f5f1ea;
-      --surface: rgba(255,255,255,0.72);
-      --surface-strong: #ffffff;
-      --surface-soft: #eee7dc;
-      --ink: #171717;
-      --text: #38342f;
-      --muted: #7a7166;
-      --line: #d4cabc;
-      --accent: #8f2436;
-      --accent-soft: rgba(143,36,54,0.08);
-      --shadow: 0 12px 40px rgba(23,23,23,0.06);
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --max: 1180px;
-      --font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,0.7), transparent 30%),
-        linear-gradient(180deg, #f8f4ed 0%, #f3eee6 100%);
-      color: var(--ink);
-      font-family: var(--font);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
-
-    .wrap {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(245, 241, 234, 0.75);
-      border-bottom: 1px solid rgba(212, 202, 188, 0.65);
-    }
-
-    .topbar-inner {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 14px 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 0 5px var(--accent-soft);
-      flex: 0 0 auto;
-    }
-
-    .brand-copy { min-width: 0; }
-    .brand-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-    }
-
-    .brand-role {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav a, .nav button {
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text);
-      padding: 9px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      transition: 160ms ease;
-      cursor: pointer;
-    }
-
-    .nav a:hover, .nav button:hover {
-      background: rgba(255,255,255,0.55);
-      border-color: rgba(212, 202, 188, 0.9);
-      color: var(--ink);
-    }
-
-    .nav .primary-link {
-      background: var(--ink);
-      color: #fff;
-    }
-
-    .nav .primary-link:hover {
-      background: #000;
-      border-color: #000;
-      color: #fff;
-    }
-
-    .hero {
-      padding: 54px 0 28px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.8fr);
-      gap: 26px;
-      align-items: stretch;
-    }
-
-    .panel {
-      background: var(--surface);
-      border: 1px solid rgba(212, 202, 188, 0.9);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    .hero-main {
-      padding: 34px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 5px var(--accent-soft);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.5rem, 7vw, 5.7rem);
-      line-height: 0.96;
-      letter-spacing: -0.06em;
-      max-width: 10ch;
-    }
-
-    .hero-copy {
-      margin-top: 22px;
-      max-width: 720px;
-      font-size: 1.06rem;
-      line-height: 1.82;
-      color: var(--text);
-    }
-
-    .hero-copy strong { color: var(--ink); }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 26px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 0 18px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.72);
-      color: var(--ink);
-      font-size: 0.92rem;
-      font-weight: 500;
-      transition: 160ms ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: #b8aa95;
-      background: #fff;
-    }
-
-    .btn.primary {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
-    }
-
-    .btn.primary:hover {
-      background: #000;
-      border-color: #000;
-    }
-
-    .hero-side {
-      padding: 22px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .mini-card {
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(212, 202, 188, 0.9);
-      border-radius: 22px;
-      padding: 18px;
-    }
-
-    .mini-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .mini-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      margin-bottom: 8px;
-    }
-
-    .mini-card p {
-      margin: 0;
-      color: var(--text);
-      line-height: 1.7;
-      font-size: 0.94rem;
-    }
-
-    .section {
-      padding: 22px 0 10px;
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-      gap: 24px;
-      align-items: end;
-      margin-bottom: 22px;
-    }
-
-    .section-kicker {
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -0.05em;
-    }
-
-    .section-note {
-      margin: 0;
-      color: var(--text);
-      line-height: 1.75;
-      font-size: 0.97rem;
-    }
-
-    .project-grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .project-card {
-      display: grid;
-      grid-template-columns: minmax(220px, 250px) minmax(0, 1fr);
-      gap: 22px;
-      padding: 24px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(212, 202, 188, 0.9);
-      border-radius: 30px;
-      box-shadow: var(--shadow);
-    }
-
-    .project-side {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-      padding-right: 8px;
-      border-right: 1px solid rgba(212, 202, 188, 0.9);
-    }
-
-    .tag {
-      display: inline-flex;
-      width: fit-content;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .project-title {
-      margin-top: 14px;
-      font-size: 1.8rem;
-      font-weight: 600;
-      letter-spacing: -0.04em;
-    }
-
-    .project-subtitle {
-      margin-top: 8px;
-      color: var(--muted);
-      line-height: 1.65;
-      font-size: 0.95rem;
-    }
-
-    .project-proof {
-      border-radius: 18px;
-      background: var(--surface-soft);
-      padding: 14px 15px;
-      color: var(--text);
-      line-height: 1.6;
-      font-size: 0.9rem;
-    }
-
-    .project-main {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .project-block {
-      background: rgba(255,255,255,0.58);
-      border: 1px solid rgba(212, 202, 188, 0.72);
-      border-radius: 22px;
-      padding: 16px;
-      min-height: 100%;
-    }
-
-    .project-block.full { grid-column: 1 / -1; }
-
-    .project-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .project-text {
-      margin: 0;
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: var(--text);
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .metric {
-      padding: 22px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(212, 202, 188, 0.9);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-    }
-
-    .metric-name {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--surface-soft);
-      color: var(--muted);
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .metric-value {
-      margin-top: 16px;
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      font-weight: 650;
-      letter-spacing: -0.05em;
-    }
-
-    .metric-desc {
-      margin-top: 10px;
-      color: var(--text);
-      line-height: 1.72;
-      font-size: 0.94rem;
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .principle {
-      padding: 22px;
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(212, 202, 188, 0.9);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      color: var(--text);
-      line-height: 1.8;
-      font-size: 1rem;
-    }
-
-    .next-box {
-      margin: 20px 0 46px;
-      padding: 30px;
-      border-radius: 32px;
-      background: #1c1b1a;
-      color: #f7f1e8;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.14);
-    }
-
-    .next-box .section-kicker { color: #b9ab9a; }
-    .next-box h2 { max-width: 950px; }
-    .next-box p {
-      max-width: 760px;
-      color: #ddd3c8;
-      line-height: 1.85;
-      font-size: 1rem;
-      margin-top: 18px;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .chip {
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #f2e8db;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .footer {
-      padding: 0 0 46px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 980px) {
-      .hero-grid,
-      .section-head,
-      .project-card,
-      .project-main,
-      .metrics,
-      .principles {
-        grid-template-columns: 1fr;
-      }
-
-      .project-side {
-        border-right: 0;
-        padding-right: 0;
-        border-bottom: 1px solid rgba(212, 202, 188, 0.9);
-        padding-bottom: 18px;
-      }
-
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav { justify-content: flex-start; }
-    }
-
-    @media (max-width: 640px) {
-      .wrap, .topbar-inner { width: min(calc(100% - 22px), var(--max)); }
-      .hero { padding-top: 28px; }
-      .hero-main, .hero-side, .project-card, .metric, .principle, .next-box { padding: 20px; }
-      .mini-card { padding: 16px; }
-      h1 { max-width: 11ch; }
-      .hero-actions, .footer { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaesung Kim</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" rel="stylesheet">
+<style>
+  :root {
+    --bg:#F2EDE4;
+    --bg-inset:#EAE4D9;
+    --bg-exp:#E2DBD0;
+    --ink:#1A1A1A;
+    --mid:#3A3A3A;
+    --muted:#7A7060;
+    --rule:#C8C0B0;
+    --num:#D8D0C4;
+    --red:#9B2335;
+    --red-bg:rgba(155,35,53,0.07);
+    --blue:#1A3A5C;
+    --blue-bg:rgba(26,58,92,0.07);
+    --f:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--f);min-height:100vh;-webkit-font-smoothing:antialiased}
+  hr{border:none;border-top:1px solid var(--rule)}
+
+  /* HEADER */
+  header{padding:2rem 3rem 0;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .name-row{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+  h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink)}
+  .phonetic{font-size:.68rem;color:var(--muted);letter-spacing:.04em}
+  .name-kr{font-size:.8rem;font-weight:400;color:var(--muted)}
+  .lang-toggle{display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.62rem;font-weight:500;letter-spacing:.12em;color:var(--muted);border:1px solid var(--rule);padding:.24rem .65rem;background:transparent;transition:all .18s;text-transform:uppercase;font-family:var(--f);white-space:nowrap}
+  .lang-toggle:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .lang-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
+
+  /* HOOK */
+  .hook{padding:1.4rem 3rem 1.6rem;display:grid;grid-template-columns:200px 1fr;gap:2.5rem;align-items:start}
+  .hook-left{display:flex;flex-direction:column;gap:.5rem}
+  .hook-pos{font-size:.7rem;color:var(--muted);letter-spacing:.03em;line-height:1.9}
+  .hook-contact{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.2rem}
+  .contact-link{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .14s;border-bottom:1px solid transparent}
+  .contact-link:hover{color:var(--ink);border-bottom-color:var(--ink)}
+  .hook-def{font-size:.95rem;font-weight:300;line-height:1.7;color:var(--mid);max-width:560px;margin-bottom:1rem}
+  .hook-def strong{font-weight:600;color:var(--ink)}
+  .hook-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+
+  /* SEARCH */
+  .search-section{padding:1.4rem 3rem;background:var(--bg-inset)}
+  .search-eyebrow{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;display:block}
+  .search-row{display:flex;align-items:center;border-bottom:1.5px solid var(--ink);padding-bottom:.35rem;gap:.7rem}
+  .search-glyph{font-size:.75rem;color:var(--muted);user-select:none;flex-shrink:0}
+  #search-input{flex:1;background:transparent;border:none;outline:none;font-family:var(--f);font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:300;color:var(--ink);letter-spacing:-.02em;caret-color:var(--red)}
+  #search-input::placeholder{color:var(--rule)}
+  #clear-btn{background:none;border:none;cursor:pointer;font-size:.65rem;color:var(--muted);display:none;padding:.2rem;font-family:var(--f)}
+  #clear-btn:hover{color:var(--ink)}
+  .tags-row{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin-top:.8rem}
+  .tags-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:.2rem}
+
+  /* PILLS */
+  .tag,.hook-tag,.skill-pill,.see-also-link{font-size:.62rem;font-weight:500;letter-spacing:.07em;border:1px solid var(--rule);padding:.2rem .55rem;cursor:pointer;transition:all .12s;color:var(--muted);background:transparent;font-family:var(--f);text-transform:uppercase}
+  .tag{text-transform:lowercase;font-weight:400}
+  .tag:hover,.hook-tag:hover,.skill-pill:hover,.see-also-link:hover{border-color:var(--ink);color:var(--ink);background:rgba(26,26,26,.05)}
+
+  /* GRID SECTION */
+  #grid-section{padding:0 3rem}
+  .results-count{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:1.2rem 0 .8rem}
+  .type-filters{display:flex;gap:.5rem;margin-bottom:1rem}
+  .type-btn{font-size:.62rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--rule);padding:.25rem .7rem;cursor:pointer;background:transparent;font-family:var(--f);color:var(--muted);transition:all .14s}
+  .type-btn:hover{border-color:var(--ink);color:var(--ink)}
+  .type-btn.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  /* CARD GRID */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+
+  /* CARD */
+  .card{background:var(--bg);cursor:pointer;display:flex;flex-direction:column;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);transition:background .15s;outline:none;position:relative;align-self:start}
+  .card:focus-visible{box-shadow:inset 0 0 0 2px var(--red)}
+  .card:hover{background:var(--bg-inset)}
+  .card.is-active{background:var(--bg-inset)}
+  .card-accent{height:2px;background:var(--rule);transition:background .15s;flex-shrink:0}
+  .card[data-type="experience"]:hover .card-accent,
+  .card[data-type="experience"].is-active .card-accent{background:var(--red)}
+  .card[data-type="project"]:hover .card-accent,
+  .card[data-type="project"].is-active .card-accent{background:var(--blue)}
+  .card-body{padding:.9rem 1rem 1rem;flex:1;display:flex;flex-direction:column;gap:.15rem}
+  .card-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.3rem}
+  .card-num{font-size:1.9rem;font-weight:700;letter-spacing:-.05em;line-height:1}
+  .card[data-type="experience"] .card-num{color:var(--num)}
+  .card[data-type="project"] .card-num{color:#C4CCDA}
+  .card-type-badge{font-size:.5rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .45rem}
+  .card[data-type="experience"] .card-type-badge{background:var(--red-bg);color:var(--red)}
+  .card[data-type="project"] .card-type-badge{background:var(--blue-bg);color:var(--blue)}
+  .card-title{font-size:.98rem;font-weight:600;letter-spacing:-.025em;color:var(--ink);line-height:1.2;margin-bottom:.1rem}
+  .card-org{font-size:.58rem;color:var(--muted);letter-spacing:.02em;line-height:1.5}
+  .card-foot{display:flex;flex-wrap:wrap;gap:.28rem;padding-top:.6rem;border-top:1px solid var(--rule);align-items:center;justify-content:space-between;margin-top:auto}
+  .card-pills{display:flex;flex-wrap:wrap;gap:.28rem}
+  .card-arrow{font-size:.7rem;color:var(--muted);transition:transform .18s,color .15s;flex-shrink:0}
+  .card:hover .card-arrow,.card.is-active .card-arrow{color:var(--ink);transform:translateX(3px)}
+
+  /* PANEL */
+  .panel-item{grid-column:1/-1;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.4,0,.2,1)}
+  .panel-item.is-open{grid-template-rows:1fr}
+  .panel-overflow{overflow:hidden}
+  .case-panel{background:var(--bg-exp);border-top:2px solid var(--ink);position:relative}
+  .panel-close{position:absolute;top:1.4rem;right:1.5rem;background:none;border:1px solid var(--rule);font-family:var(--f);font-size:.6rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.3rem .8rem;cursor:pointer;transition:all .14s}
+  .panel-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  /* PANEL LAYOUT — 3 col: meta | content | why */
+  .panel-content{
+    padding:2rem 2rem 2.5rem;
+    display:grid;
+    grid-template-columns:180px 1fr 1fr;
+    gap:2rem;
+  }
+
+  /* Left col — meta */
+  .panel-meta{}
+  .panel-title{font-size:clamp(1.1rem,2vw,1.5rem);font-weight:700;letter-spacing:-.04em;line-height:1.1;color:var(--ink);margin-bottom:.25rem}
+  .panel-org{font-size:.6rem;color:var(--muted);letter-spacing:.03em;margin-bottom:1rem;line-height:1.5}
+  .panel-metrics{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1rem}
+  .metric-block{}
+  .metric-val{display:block;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1;background:var(--red-bg);padding:.1rem .4rem;width:fit-content;margin-bottom:.18rem}
+  .metric-label{display:block;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .panel-url{display:inline-flex;align-items:center;gap:.4rem;font-size:.62rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:.1rem;transition:all .14s;margin-top:.5rem}
+  .panel-url:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+  /* Middle + Right cols — case blocks */
+  .panel-cases{display:contents}
+  .case-block{display:flex;flex-direction:column;gap:.4rem}
+  .case-block-label{font-size:.57rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red);padding-bottom:.35rem;border-bottom:1px solid var(--rule)}
+  .case-block-body{font-size:.84rem;font-weight:300;line-height:1.78;color:var(--mid)}
+
+  /* Why it matters — spans if needed */
+  .case-block.why .case-block-label{color:var(--blue)}
+
+  .see-also{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.8rem}
+
+  /* EMPTY */
+  .empty-state{grid-column:1/-1;padding:3rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .empty-word{font-size:1.6rem;font-weight:200;color:var(--rule);margin-bottom:.4rem;letter-spacing:-.02em}
+  .empty-note{font-size:.62rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+  mark{background:var(--red-bg);color:var(--red);padding:0 .1em}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--rule);padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;margin-top:3rem}
+  .footer-note{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .footer-edition{font-size:.65rem;font-weight:300;color:var(--muted);letter-spacing:.06em}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .panel-content{grid-template-columns:1fr 1fr;gap:1.5rem;padding:1.5rem 1.2rem 2rem}
+    .panel-meta{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+    .panel-title{grid-column:1/-1}
+    .panel-org{margin-bottom:.4rem}
+  }
+  @media(max-width:768px){
+    header,.hook,.search-section,#grid-section,footer{padding-left:1.2rem;padding-right:1.2rem}
+    .hook{grid-template-columns:1fr;gap:.7rem}
+    .panel-content{grid-template-columns:1fr;gap:1.2rem;padding:1.2rem 1.2rem 1.8rem}
+    .panel-meta{grid-template-columns:1fr;display:flex;flex-direction:column}
+    .panel-close{top:1rem;right:1rem}
+  }
+  @media(max-width:480px){.cards-grid{grid-template-columns:1fr}}
+
+  body.lang-kr .en-only{display:none!important}
+  body.lang-kr .kr-only{display:block!important}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .card{animation:fadeUp .24s ease both}
+</style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div class="brand-copy">
-          <div class="brand-name">Jaesung Kim</div>
-          <div class="brand-role">Human-AI Product Builder</div>
-        </div>
-      </div>
-      <nav class="nav">
-        <a href="#projects">Projects</a>
-        <a href="#systems">Systems Work</a>
-        <a href="#thinking">How I Think</a>
-        <a class="primary-link" href="mailto:your@email.com">Contact</a>
-      </nav>
+
+<header>
+  <div class="name-row">
+    <h1>Jaesung Kim</h1>
+    <span class="phonetic">/ dʒeɪ.sʌŋ kɪm /</span>
+    <span class="name-kr">김재성</span>
+  </div>
+  <button class="lang-toggle" id="lang-btn">
+    <span class="lang-dot"></span>
+    <span id="lang-label">한국어</span>
+  </button>
+</header>
+
+<hr style="margin-top:1.6rem">
+
+<div class="hook">
+  <div class="hook-left">
+    <div class="hook-pos en-only">n. systems thinker.<br>builder. writer.</div>
+    <div class="hook-pos kr-only" style="display:none">n. 시스템 사고자.<br>빌더. 작가.</div>
+    <div class="hook-contact">
+      <a class="contact-link" href="mailto:hello@jaesungkim.is">→ Email</a>
+      <a class="contact-link" href="https://linkedin.com/in/voulezvoyes" target="_blank" rel="noopener">→ LinkedIn</a>
     </div>
   </div>
+  <div class="hook-right">
+    <p class="hook-def en-only">Works at the intersection of <strong>organizational design</strong>, <strong>human-AI interaction</strong>, and <strong>creative technology</strong>. Builds things that make complex systems legible.</p>
+    <p class="hook-def kr-only" style="display:none"><strong>조직 설계</strong>, <strong>인간-AI 상호작용</strong>, <strong>크리에이티브 테크놀로지</strong>의 교차점. 복잡한 시스템을 읽기 가능하게 만드는 것들을 만든다.</p>
+    <div class="hook-tags">
+      <button class="hook-tag" data-search="systems">Systems</button>
+      <button class="hook-tag" data-search="AI">AI</button>
+      <button class="hook-tag" data-search="community">Community</button>
+      <button class="hook-tag" data-search="writing">Writing</button>
+      <button class="hook-tag" data-search="vibe coding">Vibe Coding</button>
+    </div>
+  </div>
+</div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="panel hero-main">
-          <div class="eyebrow">Focused on AI products, behavior, and interaction</div>
-          <h1>Human-AI product builder designing systems people actually use.</h1>
-          <p class="hero-copy">
-            I work at the intersection of <strong>AI products</strong>, <strong>behavior design</strong>, and <strong>emerging human-machine interaction</strong>.
-            My focus is translating messy human problems into clear product systems, then shipping prototypes that test the idea in practice.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#projects">View Featured Work</a>
-            <a class="btn" href="#systems">See Systems Experience</a>
-            <a class="btn" href="https://linkedin.com/in/voulezvoyes" target="_blank" rel="noopener">LinkedIn</a>
-          </div>
-        </div>
+<hr>
 
-        <div class="panel hero-side">
-          <div class="mini-card">
-            <div class="mini-label">Focus</div>
-            <div class="mini-title">Human-AI systems</div>
-            <p>Products that help people think, decide, and act with AI rather than merely chat with it.</p>
-          </div>
-          <div class="mini-card">
-            <div class="mini-label">Strength</div>
-            <div class="mini-title">Behavior + execution</div>
-            <p>I map user friction, build prototypes quickly, and turn ambiguous workflows into usable systems.</p>
-          </div>
-          <div class="mini-card">
-            <div class="mini-label">Next</div>
-            <div class="mini-title">Robot interaction</div>
-            <p>Currently positioning toward human-robot trust, social UX, and AI agents that fit real environments.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<section class="search-section">
+  <span class="search-eyebrow en-only">Search by keyword or skill</span>
+  <span class="search-eyebrow kr-only" style="display:none">키워드 또는 스킬로 검색</span>
+  <div class="search-row">
+    <span class="search-glyph">↳</span>
+    <input type="text" id="search-input" placeholder="AI, community, writing…" autocomplete="off" spellcheck="false">
+    <button id="clear-btn">✕</button>
+  </div>
+  <div class="tags-row">
+    <span class="tags-label en-only">try →</span>
+    <span class="tags-label kr-only" style="display:none">예시 →</span>
+    <button class="tag" data-search="systems">systems</button>
+    <button class="tag" data-search="AI">AI</button>
+    <button class="tag" data-search="vibe coding">vibe coding</button>
+    <button class="tag" data-search="writing">writing</button>
+    <button class="tag" data-search="community">community</button>
+  </div>
+</section>
 
-    <section id="projects" class="section">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">Featured Projects</div>
-          <h2>Selected work for AI PM and Human-AI roles</h2>
-        </div>
-        <p class="section-note">
-          The strongest portfolio signal is not aesthetic polish alone. It is evidence that a problem was framed clearly,
-          translated into a prototype, and tested against reality.
-        </p>
-      </div>
+<hr>
 
-      <div class="project-grid">
-        <article class="project-card">
-          <div class="project-side">
-            <div>
-              <div class="tag">Human-AI Interaction</div>
-              <div class="project-title">Spork</div>
-              <div class="project-subtitle">Branching AI conversation interface</div>
-            </div>
-            <div class="project-proof">Next.js · Supabase · Anthropic API · In progress</div>
-          </div>
-          <div class="project-main">
-            <div class="project-block">
-              <div class="project-label">Problem</div>
-              <p class="project-text">AI chat is linear, but thinking is not. Valuable directions get buried mid-conversation, even when they should become separate lines of reasoning.</p>
-            </div>
-            <div class="project-block">
-              <div class="project-label">Built</div>
-              <p class="project-text">Designed a chat interface where any message can branch into a parallel thread while preserving the original context and keeping thought paths visible.</p>
-            </div>
-            <div class="project-block full">
-              <div class="project-label">Why it matters</div>
-              <p class="project-text">This project shows product thinking around memory, context, and collaborative reasoning with AI. It is the clearest signal that I care about the structure of human-AI thinking, not just prompt outputs.</p>
-            </div>
-          </div>
-        </article>
+<section id="grid-section">
+  <div class="results-count" id="results-count"></div>
+  <div class="type-filters">
+    <button class="type-btn active" data-filter="all">All</button>
+    <button class="type-btn" data-filter="experience">Experience</button>
+    <button class="type-btn" data-filter="project">Projects</button>
+  </div>
+  <div class="cards-grid" id="cards-grid"></div>
+</section>
 
-        <article class="project-card">
-          <div class="project-side">
-            <div>
-              <div class="tag">Behavior Design</div>
-              <div class="project-title">Compliance Nudge</div>
-              <div class="project-subtitle">Behavioral system for AI training adoption</div>
-            </div>
-            <div class="project-proof">Zero budget · Solo built · Internal deployment</div>
-          </div>
-          <div class="project-main">
-            <div class="project-block">
-              <div class="project-label">Problem</div>
-              <p class="project-text">Employees ignored AI training reminders. The issue was not information availability, but visibility, social pressure, and accountability.</p>
-            </div>
-            <div class="project-block">
-              <div class="project-label">Built</div>
-              <p class="project-text">Used Google Calendar, Apps Script, and Sheets to turn training completion into a daily public signal inside the tools people already opened at work.</p>
-            </div>
-            <div class="project-block full">
-              <div class="project-label">Why it matters</div>
-              <p class="project-text">This is strong PM evidence because it shows shipping within real organizational constraints, not just designing polished mockups. It is a live systems intervention, not a hypothetical deck.</p>
-            </div>
-          </div>
-        </article>
+<footer>
+  <span class="footer-note en-only">Jaesung Kim — All entries reflect direct contribution.</span>
+  <span class="footer-note kr-only" style="display:none">김재성 — 모든 항목은 직접 기여한 작업입니다.</span>
+  <span class="footer-edition">jaesungkim.is</span>
+</footer>
 
-        <article class="project-card">
-          <div class="project-side">
-            <div>
-              <div class="tag">AI Product Design</div>
-              <div class="project-title">Cosmos</div>
-              <div class="project-subtitle">AI knowledge graph prototype</div>
-            </div>
-            <div class="project-proof">Gemini API · Deployed prototype</div>
-          </div>
-          <div class="project-main">
-            <div class="project-block">
-              <div class="project-label">Problem</div>
-              <p class="project-text">Traditional note tools store information but do not surface conceptual connections well. Search retrieves facts; it does not reveal structure.</p>
-            </div>
-            <div class="project-block">
-              <div class="project-label">Built</div>
-              <p class="project-text">Built a prototype that extracts concepts from text and maps them into a connected node graph so information becomes visible as structure, not just storage.</p>
-            </div>
-            <div class="project-block full">
-              <div class="project-label">Why it matters</div>
-              <p class="project-text">This frames AI as a structure-building layer rather than just a chatbot. It signals how I think about product opportunities for knowledge work and reasoning support.</p>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
+<script>
+var ENTRIES = [
+  { id:'spork', type:'project', num:'01',
+    title:'spork', title_kr:'spork',
+    org:'Personal — In Progress', org_kr:'개인 프로젝트 — 진행 중',
+    skills:['Vibe Coding','HCI','AI / LLM'],
+    metrics:[{val:'In progress',label:'Status'},{val:'Next.js',label:'Stack'}],
+    case:{
+      problem:'AI chat is linear, but thinking is not. Valuable directions get buried mid-conversation, even when they should become separate lines of reasoning.',
+      built:'Designing a chat interface where any message can branch into a parallel thread — preserving the original context while opening a new direction. Branch structure is visualized as a navigable tree in the sidebar. Built on Next.js + Supabase + Anthropic API.',
+      why:'This project shows product thinking around memory, context, and collaborative reasoning with AI. It is the clearest signal of how I think about the structure of human-AI interaction — not just prompt inputs and outputs.',
+      seeAlso:['AI','systems','HCI']
+    },
+    case_kr:{
+      problem:'AI 챗은 다 일직선이다. 근데 생각은 그렇게 흐르지 않는다. 좋은 흐름이 생겨도 그냥 묻혀버린다.',
+      built:'어느 메시지에서든 대화를 분기할 수 있는 채팅 인터페이스를 만들고 있다. 원본은 그대로 두고 새 흐름을 열 수 있다. Next.js + Supabase + Anthropic API.',
+      why:'AI와 사람이 대화하는 방식 자체의 구조적 문제를 건드리는 프로젝트라 HCDE 케이스 스터디로 자연스럽게 이어진다.',
+      seeAlso:['AI','시스템','HCI']
+    },
+    keywords:['AI','spork','chat','branching','HCI','vibe coding','next.js','supabase','anthropic','in progress','hcde'] },
 
-    <section id="systems" class="section">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">Systems Work</div>
-          <h2>I also build operational systems, not only product demos</h2>
-        </div>
-        <p class="section-note">
-          For PM roles, this matters. Shipping is not just interface design. It is making a system sustainable under real constraints across people, handoffs, incentives, and communication failures.
-        </p>
-      </div>
+  { id:'compliance-nudge', type:'experience', num:'02',
+    title:'compliance nudge', title_kr:'compliance nudge',
+    org:'Coway USA — Internal HR Tech', org_kr:'Coway USA — 사내 HR Tech',
+    skills:['Behavioral Design','Systems Design','No-code'],
+    metrics:[{val:'$0',label:'Budget'},{val:'Solo',label:'Built by'}],
+    case:{
+      problem:'Employees ignored AI training reminders. The issue was not information availability — it was visibility, social accountability, and the absence of any consequence for non-completion.',
+      built:'Used Google Calendar, Apps Script, and Sheets to turn training completion into a daily public signal inside tools people already opened. Department rates post at 9am, disappear at 6pm. Leader non-completion is flagged by name. No dev budget, no external tools.',
+      why:'This is strong PM evidence because it shows shipping within real organizational constraints. It is a live behavioral system deployed inside a company — not a mockup, not a concept deck.',
+      seeAlso:['systems','AI','behavioral']
+    },
+    case_kr:{
+      problem:'전사 AI 교육 수강률을 올리라는 과제가 떨어졌다. 독려 메일은 이미 아무도 안 읽고 있었다. 문제는 정보 부족이 아니라 가시성과 책임감의 부재였다.',
+      built:'새로운 링크를 만드는 대신 모두가 이미 매일 여는 화면 — 사내 캘린더 — 을 썼다. Apps Script로 매일 오전 9시에 부서별 진도율이 올라오고 오후 6시에 사라진다. 팀장이 안 들었으면 팀장 이름 옆에 뜬다.',
+      why:'결과는 추적 중이다. Google Sheets, Calendar, Apps Script만 엮어서 혼자 만들었다. 예산도 없었고 개발자도 없었다. 실제 조직 안에서 작동하는 시스템을 만든 거라는 게 핵심이다.',
+      seeAlso:['시스템','AI','행동설계']
+    },
+    keywords:['behavioral','design','nudge','hr','no-code','calendar','apps script','systems','coway','compliance','training'] },
 
-      <div class="metrics">
-        <div class="metric">
-          <div class="metric-name">Budget increase</div>
-          <div class="metric-value">83%</div>
-          <div class="metric-desc">Rebuilt organizational documentation and planning systems for Ko.SCA, making the group less dependent on individual memory.</div>
-        </div>
-        <div class="metric">
-          <div class="metric-name">Onboarding</div>
-          <div class="metric-value">2 mo → 2 wks</div>
-          <div class="metric-desc">Reduced transition friction by converting tacit knowledge into repeatable operating documents and clearer team handoff processes.</div>
-        </div>
-        <div class="metric">
-          <div class="metric-name">Audience growth</div>
-          <div class="metric-value">19K → 28K</div>
-          <div class="metric-desc">Built editorial structure and brand consistency for Erin Oh Studio over two years, improving coherence and growth together.</div>
-        </div>
-      </div>
-    </section>
+  { id:'cosmos', type:'project', num:'03', url:'https://cosmos-is.vercel.app',
+    title:'cosmos', title_kr:'cosmos',
+    org:'Personal — AI Tool Design', org_kr:'개인 프로젝트 — AI 도구 설계',
+    skills:['Vibe Coding','AI / LLM','Product Design'],
+    metrics:[{val:'Gemini',label:'API'},{val:'Deployed',label:'Status'}],
+    case:{
+      problem:'Traditional note tools store information but don\'t surface conceptual connections. Search retrieves facts — it doesn\'t reveal structure. The real problem is that most PKM tools are filing cabinets, not thinking tools.',
+      built:'Built a prototype using Google AI Studio and Gemini API. Input any text; the model extracts underlying concepts, nodes form on a canvas, and edges emerge between ideas that share conceptual ground. Information becomes visible as structure, not just storage.',
+      why:'This frames AI as a structure-building layer rather than a chatbot. It signals how I think about product opportunities for knowledge work and reasoning support — LLMs as connective tissue between ideas, not just retrieval engines.',
+      seeAlso:['AI','systems','product design']
+    },
+    case_kr:{
+      problem:'기존 PKM 툴은 서류 캐비닛 같았다. 검색은 사실을 가져오지, 구조를 보여주지 않는다. 진짜 문제는 저장이 아니라 연결이었다.',
+      built:'Google AI Studio랑 Gemini API로 만들었다. 텍스트를 넣으면 모델이 개념을 뽑아내고, 연결이 있는 곳에 선이 생긴다. 검색이 아니라 지도에 가까운 것.',
+      why:'LLM이 검색 엔진이 아니라 구조를 만드는 도구로 쓰일 수 있다는 걸 확인했다. 지식 작업과 추론 지원에 대한 제품 기회를 어떻게 생각하는지를 보여준다.',
+      seeAlso:['AI','시스템','제품 설계']
+    },
+    keywords:['AI','cosmos','knowledge','tool','gemini','prototype','systems','product','vibe coding','pkm'] },
 
-    <section id="thinking" class="section">
-      <div class="section-head">
-        <div>
-          <div class="section-kicker">How I Think</div>
-          <h2>Product principles shaping my work</h2>
-        </div>
-        <p class="section-note">
-          The throughline across my projects is simple: when systems fail, the problem is often not capability, but how people interpret, trust, and use the system around them.
-        </p>
-      </div>
+  { id:'ko-sca-brand', type:'experience', num:'04',
+    title:'Ko.SCA — Brand & Strategy', title_kr:'Ko.SCA — 브랜드 & 전략',
+    org:'Korean Student Cultural Association, UC San Diego', org_kr:'한인 학생 문화 협회, UC San Diego',
+    skills:['Brand Strategy','Org Design','Leadership'],
+    metrics:[{val:'83%',label:'Budget increase'},{val:'2 wks',label:'Onboarding (was 2 mo)'}],
+    case:{
+      problem:'Ko.SCA ran on informal handoffs and institutional memory that lived in people\'s heads. Every leadership transition meant starting over — the org was personality-dependent, not system-dependent.',
+      built:'Mapped everything that existed only in people\'s heads and turned it into written systems: role docs for every position, runbooks for every recurring event, standardized communication protocols. Budget proposals shifted from gut-feel asks to outcome-tied justifications.',
+      why:'Onboarding dropped from two months to two weeks. Budget grew 83% over two cycles. More importantly, the org could now absorb leadership turnover without losing institutional memory. This is the same skill set required to scale a product team.',
+      seeAlso:['community','systems','leadership']
+    },
+    case_kr:{
+      problem:'Ko.SCA는 사람이 곧 시스템이었다. 아는 사람이 나가면 그냥 다 사라졌다. 리더십이 바뀔 때마다 처음부터 다시 시작이었다.',
+      built:'머릿속에만 있던 것들을 전부 꺼냈다. 역할마다 문서를 만들고, 행사마다 런북을 뽑고, 팀 간 소통 방식을 표준화했다. 예산 요청도 감이 아닌 데이터로 바꿨다.',
+      why:'온보딩이 두 달에서 2주로 줄었다. 예산은 83% 늘었다. 더 중요한 건 — 내가 없어도 돌아가는 조직이 됐다는 것. 제품 팀을 스케일링할 때 필요한 스킬셋과 같다.',
+      seeAlso:['커뮤니티','시스템','리더십']
+    },
+    keywords:['brand','strategy','ko.sca','organizational','leadership','design','community','systems','onboarding','budget'] },
 
-      <div class="principles">
-        <div class="principle">AI products fail when they ignore actual human behavior.</div>
-        <div class="principle">Good systems reduce friction without demanding attention.</div>
-        <div class="principle">Trust in AI is a UX problem before it is a model problem.</div>
-        <div class="principle">Robot products need social interaction design, not only hardware logic.</div>
-      </div>
-    </section>
+  { id:'erin-oh', type:'experience', num:'05',
+    title:'Erin Oh Studio', title_kr:'Erin Oh Studio',
+    org:'Erin Oh Studio, Los Angeles', org_kr:'Erin Oh Studio, 로스앤젤레스',
+    skills:['Brand Systems','Audience Growth','Editorial'],
+    metrics:[{val:'19K → 28K',label:'Followers'},{val:'2023–2025',label:'Duration'}],
+    case:{
+      problem:'Strong visual identity, inconsistent output, no editorial framework. Growth had plateaued — not because the content was bad, but because there was no system for producing it consistently.',
+      built:'Started with a full audit of what had been posted, what performed, and why. Then built recurring series formats, platform-specific tone guides, and a content calendar that made consistent output achievable without creative burnout.',
+      why:'Audience grew from ~19K to 28K over two years. More importantly, the brand started sounding like the same person everywhere — regardless of platform or format. Consistency at scale is a systems problem, not a creativity problem.',
+      seeAlso:['brand strategy','systems','editorial']
+    },
+    case_kr:{
+      problem:'비주얼은 강했는데 콘텐츠가 들쭉날쭉했다. 올리는 기준도 없었고 성장도 멈춰 있었다. 콘텐츠 자체의 문제가 아니라 시스템의 부재였다.',
+      built:'뭘 올렸는지 전부 뜯어봤다. 뭐가 먹히고 뭐가 안 먹히는지 패턴을 잡고, 반복할 수 있는 시리즈 포맷을 만들었다. 플랫폼마다 달라야 하는 톤도 정리했다.',
+      why:'팔로워가 19K에서 28K로 늘었다. 숫자보다 중요한 건 — 이제 브랜드가 어디서 뭘 올려도 같은 사람처럼 들린다는 것. 일관성은 창의성의 문제가 아니라 시스템의 문제다.',
+      seeAlso:['브랜드 전략','시스템','에디토리얼']
+    },
+    keywords:['content','strategy','erin','oh','studio','social','media','growth','brand','editorial','instagram'] },
 
-    <section class="section">
-      <div class="next-box">
-        <div class="section-kicker">Next build direction</div>
-        <h2>Next, I want a project that proves I can design human-robot trust and interaction flows.</h2>
-        <p>
-          The clearest gap in the current portfolio is a concrete robot or embodied-agent case. That should be the next addition:
-          a project showing how people interpret timing, trust, interruption, and social cues from a machine in shared space.
-        </p>
-        <div class="chips">
-          <div class="chip">robot receptionist UX</div>
-          <div class="chip">trust calibration</div>
-          <div class="chip">agent collaboration flows</div>
-        </div>
-      </div>
-    </section>
+  { id:'memoir', type:'experience', num:'06',
+    title:'altogether alone', title_kr:'온전히 혼자',
+    org:'Bilingual Memoir — Self-published 2025', org_kr:'이중 언어 memoir — 2025년 독립출판',
+    skills:['Long-form Writing','Publishing'],
+    metrics:[{val:'EN / KR',label:'Languages'},{val:'2025',label:'Self-published'}],
+    case:{
+      problem:'The gap between the two versions of yourself — Korean at home, English everywhere else — is rarely written about from the inside. Most writing about bilingual identity translates one version into the other. That\'s the wrong framing.',
+      built:'Wrote both English and Korean versions at the same time, refusing to designate either as the original. The constraint forced a discovery: the same memory, recalled in different languages, produces different emotional textures. They\'re not the same story twice.',
+      why:'Self-published in 2025. The act of writing in both languages simultaneously became the argument of the book itself — that the gap between languages isn\'t a loss of meaning. It\'s where a particular kind of clarity lives.',
+      seeAlso:['writing','identity','publishing']
+    },
+    case_kr:{
+      problem:'집에서는 한국어, 밖에서는 영어로 사는 삶. 그 사이 어딘가에 있는 자아에 대해서는 아무도 잘 안 쓴다. 대부분의 이중 언어 서사는 한 버전을 다른 버전으로 번역한다. 그게 잘못된 프레임이다.',
+      built:'영어로 쓰고 번역한 게 아니다. 두 언어로 동시에 썼다. 같은 장면이 언어에 따라 다르게 보인다는 걸 알았다. 같은 이야기를 두 번 한 게 아니라 같은 지형을 두 각도에서 본 거다.',
+      why:'2025년에 냈다. 두 언어로 동시에 쓰는 행위 자체가 책의 주장이 됐다 — 두 언어 사이의 공간이 의미의 손실이 아니라, 오히려 거기서만 보이는 것들이 있다는 것.',
+      seeAlso:['글쓰기','정체성','출판']
+    },
+    keywords:['bilingual','writing','memoir','book','publishing','korean','english','identity','altogether','alone','creative'] },
 
-    <footer class="footer">
-      <div>Jaesung Kim — Human-AI Product Builder</div>
-      <div class="footer-links">
-        <a href="#projects">Projects</a>
-        <a href="https://linkedin.com/in/voulezvoyes" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:your@email.com">Email</a>
-      </div>
-    </footer>
-  </main>
+  { id:'ko-sca-ops', type:'experience', num:'07',
+    title:'Ko.SCA — Community Design', title_kr:'Ko.SCA — 커뮤니티 설계',
+    org:'Korean Student Cultural Association, UC San Diego', org_kr:'한인 학생 문화 협회, UC San Diego',
+    skills:['Community Design','Operations','Org Design'],
+    metrics:[{val:'4×',label:'Faster onboarding'}],
+    case:{
+      problem:'Knowledge lived in people, not systems. When key members left, the org had to start from scratch every cycle. The same mistakes were made repeatedly because there was no institutional memory.',
+      built:'Treated the org like a product that needed documentation. Mapped every recurring process that had only ever lived in conversation. Built role docs, event checklists, and transition protocols designed to transfer context — not just tasks — between incoming and outgoing leadership.',
+      why:'Onboarding dropped from two months to two weeks. The org began functioning independently of any particular member\'s presence. This is the same challenge product ops teams face when scaling across people and handoffs.',
+      seeAlso:['community','systems','org design']
+    },
+    case_kr:{
+      problem:'아는 사람이 나가면 그냥 다 같이 나갔다. 매번 새로 시작이었다. 같은 실수가 반복됐다. 조직 기억이 없었다.',
+      built:'조직을 문서화가 필요한 제품처럼 다뤘다. 대화 속에만 있던 모든 반복 프로세스를 꺼냈다. 역할 문서, 행사 체크리스트, 맥락을 넘기기 위한 인수인계 프로토콜을 만들었다.',
+      why:'온보딩이 두 달에서 2주로 줄었다. 사람이 바뀌어도 조직이 멈추지 않게 됐다. 제품 팀이 사람과 인수인계 사이에서 스케일링할 때 마주치는 것과 같은 도전이다.',
+      seeAlso:['커뮤니티','시스템','조직 설계']
+    },
+    keywords:['community','design','operations','onboarding','systems','leadership','organization','ko.sca','structure'] },
+
+  { id:'luna-reads', type:'project', num:'08', url:'https://luna-reads.vercel.app',
+    title:'luna reads', title_kr:'luna reads',
+    org:'Personal — AI · Astrology · Saju', org_kr:'개인 프로젝트 — AI · 점성학 · 사주',
+    skills:['Vibe Coding','AI / LLM','Product Design'],
+    metrics:[{val:'Live',label:'Status'},{val:'Vercel',label:'Platform'}],
+    case:{
+      problem:'Saju and Western astrology answer the same questions about a person but have always existed as separate systems. People who use both have to synthesize them manually. No tool had merged the two.',
+      built:'Designed and built the entire product solo. A user inputs birth data; the system generates a synthesized reading drawing on both saju (Korean four pillars) and Western astrology simultaneously — not as separate outputs, but as a unified interpretation.',
+      why:'Live at luna-reads.vercel.app. The first project where idea-to-deployed-product was done entirely alone — design, build, and ship. Demonstrates that I can take an untested product idea from zero to live without a team.',
+      seeAlso:['AI','vibe coding','product design']
+    },
+    case_kr:{
+      problem:'사주도 보고 타로도 보는 사람은 많은데, 둘을 같이 읽어주는 곳은 없었다. 두 시스템을 쓰는 사람은 직접 합쳐야 했다.',
+      built:'생년월일 넣으면 두 시스템을 합쳐서 리딩을 뽑아주는 걸 혼자 만들었다. 별도 출력이 아닌 통합된 해석으로.',
+      why:'지금 살아있다. 처음으로 아이디어에서 실제 배포까지 혼자 끝낸 프로젝트다. 팀 없이 제로에서 라이브까지 갈 수 있다는 걸 증명한다.',
+      seeAlso:['AI','바이브 코딩','제품 설계']
+    },
+    keywords:['AI','luna','reads','astrology','saju','vibe coding','product','deployed','vercel'] }
+];
+
+var lang='en', query='', activeId=null, activeFilter='all', rendered=false;
+
+function hl(t,q){
+  if(!q)return t;
+  return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>');
+}
+function matchEntry(e,q){
+  if(!q)return true;
+  var cd=e.case;
+  return [e.title,e.org,cd.problem||'',cd.built||'',cd.why||'']
+    .concat(e.skills).concat(e.keywords)
+    .join(' ').toLowerCase().indexOf(q.toLowerCase().trim())!==-1;
+}
+function getFiltered(){
+  return ENTRIES.filter(function(e){
+    return matchEntry(e,query)&&(activeFilter==='all'||e.type===activeFilter);
+  });
+}
+
+function buildCard(e,i){
+  var kr=lang==='kr';
+  var pillsH=e.skills.map(function(s){
+    return '<span class="skill-pill" data-search="'+s.toLowerCase()+'">'+s+'</span>';
+  }).join('');
+  var delay=rendered?'0s':(i*0.04)+'s';
+  return '<div class="card" data-card-id="'+e.id+'" data-type="'+e.type+'" tabindex="0" role="button" style="animation-delay:'+delay+'">'
+    +'<div class="card-accent"></div>'
+    +'<div class="card-body">'
+    +'<div class="card-top"><div class="card-num">'+e.num+'</div><span class="card-type-badge">'+e.type+'</span></div>'
+    +'<div class="card-title">'+hl(kr?e.title_kr:e.title,query)+'</div>'
+    +'<div class="card-org">'+(kr?e.org_kr:e.org)+'</div>'
+    +'<div class="card-foot"><div class="card-pills">'+pillsH+'</div><span class="card-arrow">→</span></div>'
+    +'</div></div>';
+}
+
+function buildPanelHTML(e){
+  var kr=lang==='kr';
+  var cd=kr?e.case_kr:e.case;
+  var metricsH=e.metrics.map(function(m){
+    return '<div class="metric-block"><span class="metric-val">'+m.val+'</span><span class="metric-label">'+m.label+'</span></div>';
+  }).join('');
+  var seeAlsoH=cd.seeAlso.map(function(s){
+    return '<button class="see-also-link" data-search="'+s+'">'+s+'</button>';
+  }).join('');
+  var urlBtn=e.url?'<a href="'+e.url+'" target="_blank" rel="noopener" class="panel-url">↗ '+(kr?'사이트 보기':'Visit site')+'</a>':'';
+
+  return '<div class="panel-meta">'
+    +'<div class="panel-title">'+(kr?e.title_kr:e.title)+'</div>'
+    +'<div class="panel-org">'+(kr?e.org_kr:e.org)+'</div>'
+    +'<div class="panel-metrics">'+metricsH+'</div>'
+    +urlBtn
+    +'</div>'
+    +'<div class="case-block">'
+    +'<div class="case-block-label">'+(kr?'문제':'Problem')+'</div>'
+    +'<div class="case-block-body">'+cd.problem+'</div>'
+    +'</div>'
+    +'<div class="case-block why">'
+    +'<div class="case-block-label">'+(kr?'구현':'Built')+'</div>'
+    +'<div class="case-block-body">'+cd.built+'</div>'
+    +'<div class="case-block-label" style="margin-top:1.2rem">'+(kr?'의미':'Why it matters')+'</div>'
+    +'<div class="case-block-body">'+cd.why+'</div>'
+    +'<div class="see-also">'+seeAlsoH+'</div>'
+    +'</div>';
+}
+
+function render(){
+  var matched=getFiltered();
+  var kr=lang==='kr';
+  document.getElementById('results-count').textContent=query
+    ?(kr?'"'+query+'" — '+matched.length+'개':matched.length+' result'+(matched.length===1?'':'s')+' for "'+query+'"')
+    :(kr?'전체 — '+matched.length+'개':'All entries — '+matched.length);
+  var grid=document.getElementById('cards-grid');
+  if(matched.length===0){
+    grid.innerHTML='<div class="empty-state"><div class="empty-word">&ldquo;'+query+'&rdquo;</div><div class="empty-note">'+(kr?'결과 없음':'No entries found.')+'</div></div>';
+    activeId=null;rendered=true;return;
+  }
+  grid.innerHTML=matched.map(function(e,i){return buildCard(e,i);}).join('');
+  rendered=true;
+  if(activeId&&matched.find(function(e){return e.id===activeId;})){
+    var ac=grid.querySelector('[data-card-id="'+activeId+'"]');
+    if(ac){ac.classList.add('is-active');insertPanel();}
+  }
+}
+
+function insertPanel(){
+  removePanel();
+  var grid=document.getElementById('cards-grid');
+  var ac=grid.querySelector('[data-card-id="'+activeId+'"]');
+  if(!ac)return;
+  var allCards=Array.from(grid.querySelectorAll('.card'));
+  var top=ac.getBoundingClientRect().top;
+  var lastInRow=ac;
+  allCards.forEach(function(c){
+    if(Math.abs(c.getBoundingClientRect().top-top)<5&&allCards.indexOf(c)>allCards.indexOf(lastInRow))lastInRow=c;
+  });
+  var el=document.createElement('div');
+  el.className='panel-item';
+  el.id='panel-item';
+  el.innerHTML='<div class="panel-overflow"><div class="case-panel">'
+    +'<button class="panel-close" id="panel-close-btn">✕ Close</button>'
+    +'<div class="panel-content">'+buildPanelHTML(ENTRIES.find(function(x){return x.id===activeId;}))+'</div>'
+    +'</div></div>';
+  lastInRow.parentNode.insertBefore(el,lastInRow.nextSibling);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('is-open');});});
+}
+
+function removePanel(){var p=document.getElementById('panel-item');if(p)p.remove();}
+
+function openCard(id){
+  var grid=document.getElementById('cards-grid');
+  if(activeId){var prev=grid.querySelector('[data-card-id="'+activeId+'"]');if(prev)prev.classList.remove('is-active');}
+  activeId=id;
+  var ac=grid.querySelector('[data-card-id="'+id+'"]');
+  if(ac)ac.classList.add('is-active');
+  insertPanel();
+  setTimeout(function(){var p=document.getElementById('panel-item');if(p)p.scrollIntoView({behavior:'smooth',block:'nearest'});},120);
+}
+
+function closePanel(){
+  var p=document.getElementById('panel-item');
+  if(p){
+    p.classList.remove('is-open');
+    var ac=document.querySelector('[data-card-id="'+activeId+'"]');
+    if(ac)ac.classList.remove('is-active');
+    setTimeout(function(){removePanel();activeId=null;},420);
+  }else{activeId=null;}
+}
+
+function toggleLang(){
+  lang=lang==='en'?'kr':'en';
+  document.body.classList.toggle('lang-kr',lang==='kr');
+  document.getElementById('lang-label').textContent=lang==='en'?'한국어':'English';
+  if(activeId){
+    var pc=document.getElementById('panel-item');
+    if(pc)pc.querySelector('.panel-content').innerHTML=buildPanelHTML(ENTRIES.find(function(x){return x.id===activeId;}));
+  }
+  var grid=document.getElementById('cards-grid');
+  if(!grid)return;
+  getFiltered().forEach(function(e){
+    var card=grid.querySelector('[data-card-id="'+e.id+'"]');
+    if(!card)return;
+    card.querySelector('.card-title').innerHTML=hl(lang==='kr'?e.title_kr:e.title,query);
+    card.querySelector('.card-org').textContent=lang==='kr'?e.org_kr:e.org;
+  });
+}
+
+function setSearch(term){
+  query=term;
+  document.getElementById('search-input').value=term;
+  document.getElementById('clear-btn').style.display=term?'inline':'none';
+  activeId=null;render();
+}
+
+var resizeTimer;
+window.addEventListener('resize',function(){
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(function(){if(!activeId)return;removePanel();insertPanel();},150);
+});
+
+document.addEventListener('click',function(e){
+  if(e.target.closest('#lang-btn')){toggleLang();return;}
+  if(e.target.id==='clear-btn'){setSearch('');return;}
+  if(e.target.id==='panel-close-btn'){closePanel();return;}
+  var tf=e.target.closest('[data-filter]');
+  if(tf){activeFilter=tf.getAttribute('data-filter');document.querySelectorAll('.type-btn').forEach(function(b){b.classList.remove('active');});tf.classList.add('active');activeId=null;render();return;}
+  var pill=e.target.closest('.skill-pill');
+  if(pill){e.preventDefault();setSearch(pill.getAttribute('data-search'));return;}
+  var sa=e.target.closest('[data-search]');
+  if(sa&&!e.target.closest('[data-card-id]')){e.preventDefault();setSearch(sa.getAttribute('data-search'));return;}
+  var card=e.target.closest('[data-card-id]');
+  if(card){var id=card.getAttribute('data-card-id');if(activeId===id){closePanel();}else{openCard(id);}return;}
+});
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){if(activeId){closePanel();return;}setSearch('');document.getElementById('search-input').blur();}
+  if(e.key==='Enter'&&document.activeElement&&document.activeElement.hasAttribute('data-card-id'))document.activeElement.click();
+});
+
+document.getElementById('search-input').addEventListener('input',function(){setSearch(this.value.trim());});
+render();
+</script>
 </body>
 </html>
